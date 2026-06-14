@@ -23,14 +23,8 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress
 
       - name: Marketcheck and Create Instance
-        # ใช้คำสั่งค้นหาไฟล์ oci-arm-host-capacity.php ในระบบ แล้วสั่งรันจากโฟลเดอร์นั้นโดยตรง
-        run: |
-          TARGET_FILE=$(find . -name "oci-arm-host-capacity.php" | head -n 1)
-          TARGET_DIR=$(dirname "$TARGET_FILE")
-          echo "Found script at: $TARGET_FILE"
-          echo "Moving to directory: $TARGET_DIR"
-          cd "$TARGET_DIR"
-          php oci-arm-host-capacity.php
+        # เปลี่ยนมาเรียกใช้งานไฟล์หลักของเวอร์ชันปัจจุบัน
+        run: php main.php
         env:
           OCI_REGION: ${{ secrets.OCI_REGION }}
           OCI_USER_ID: ${{ secrets.OCI_USER_ID }}
