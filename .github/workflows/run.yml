@@ -1,0 +1,38 @@
+name: Launch OCI ARM instance
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '*/5 * * * *' # สั่งบอทรันอัตโนมัติทุกๆ 5 นาที
+  workflow_dispatch:      # เพิ่มปุ่มสำหรับกดสั่งรันเองด้วยมือ
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Dependencies
+        run: composer install --no-dev --prefer-dist --no-progress
+
+      - name: Marketcheck and Create Instance
+        run: php oci-arm-host-capacity.php
+        env:
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_USER_ID: ${{ secrets.OCI_USER_ID }}
+          OCI_TENANCY_ID: ${{ secrets.OCI_TENANCY_ID }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }} # ดึงค่าจาก Secret ที่คุณตั้งไว้
+          OCI_PRIVATE_KEY_FILENAME: ${{ secrets.OCI_KEY_FILE }} # ดึงค่าเนื้อหาไฟล์ .pem
+          OCI_AVAILABILITY_DOMAIN: ${{ secrets.OCI_AVAILABILITY_DOMAIN }}
+          OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
+          OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
+          OCI_OCPUS: ${{ secrets.OCI_OCPUS }}
+          OCI_MEMORY_IN_GBS: ${{ secrets.OCI_MEMORY_IN_GBS }}
+          OCI_SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
