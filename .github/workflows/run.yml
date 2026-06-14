@@ -23,9 +23,7 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress
 
       - name: Marketcheck and Create Instance
-        # สั่งให้ระบบเข้าไปรันคำสั่งในโฟลเดอร์ src ที่ไฟล์ตัวจริงตั้งอยู่
-        working-directory: ./src
-        run: php oci-arm-host-capacity.php
+        run: php ./oci-arm-host-capacity.php
         env:
           OCI_REGION: ${{ secrets.OCI_REGION }}
           OCI_USER_ID: ${{ secrets.OCI_USER_ID }}
