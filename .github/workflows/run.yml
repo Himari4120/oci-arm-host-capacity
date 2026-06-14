@@ -23,13 +23,16 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress
 
       - name: Marketcheck and Create Instance
+        defaults:
+          run:
+            working-directory: .
         run: php oci-arm-host-capacity.php
         env:
           OCI_REGION: ${{ secrets.OCI_REGION }}
           OCI_USER_ID: ${{ secrets.OCI_USER_ID }}
           OCI_TENANCY_ID: ${{ secrets.OCI_TENANCY_ID }}
-          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }} # ดึงค่าจาก Secret ที่คุณตั้งไว้
-          OCI_PRIVATE_KEY_FILENAME: ${{ secrets.OCI_KEY_FILE }} # ดึงค่าเนื้อหาไฟล์ .pem
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_PRIVATE_KEY_FILENAME: ${{ secrets.OCI_KEY_FILE }}
           OCI_AVAILABILITY_DOMAIN: ${{ secrets.OCI_AVAILABILITY_DOMAIN }}
           OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
           OCI_IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}
