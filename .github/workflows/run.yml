@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/5 * * * *' # สั่งบอทรันอัตโนมัติทุกๆ 5 นาที
-  workflow_dispatch:      # เพิ่มปุ่มสำหรับกดสั่งรันเองด้วยมือ
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 jobs:
   run:
@@ -23,9 +23,6 @@ jobs:
         run: composer install --no-dev --prefer-dist --no-progress
 
       - name: Marketcheck and Create Instance
-        defaults:
-          run:
-            working-directory: .
         run: php oci-arm-host-capacity.php
         env:
           OCI_REGION: ${{ secrets.OCI_REGION }}
